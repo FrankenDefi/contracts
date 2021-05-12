@@ -261,6 +261,26 @@ contract MasterChef is Ownable, ReentrancyGuard {
         pool.lastRewardBlock = block.number;
     }
 
+    // function to harvest all pools
+    function harvestAll() public nonReentrant {
+        uint256 length = poolInfo.length;
+        for (uint256 pid = 0; pid < length; ++pid) {
+            PoolInfo storage pool = poolInfo[pid];
+            UserInfo storage user = userInfo[pid][msg.sender];
+            if (user.shares > 0) {
+                updatePool(pid);
+                uint256 pending = user.shares.mul(pool.accNATIVEPerShare).div(1e12).sub(user.rewardDebt);
+                if (pending > 0) {
+                    safeNATIVETransfer(msg.sender, pending);
+                    uint256 _amountSponsor = pending.mul(percReferrals).div(10000);
+                    NativeToken(NATIVE).mint(referrals.getSponsor(msg.sender), _amountSponsor);
+                    referrals.updateEarn(referrals.getSponsor(msg.sender), _amountSponsor);
+                }
+                user.rewardDebt = user.shares.mul(pool.accNATIVEPerShare).div(1e12);
+            }
+        }
+    }
+
     // Want tokens moved from user -> AUTOFarm (AUTO allocation) -> Strat (compounding)
     function deposit(uint256 _pid, uint256 _wantAmt, address _sponsor) public nonReentrant {
         require(block.timestamp > startTime, "!startTime");
