@@ -11,7 +11,7 @@ pragma solidity 0.6.12;
     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝╚═╝╚═╝  ╚═══╝
                                                                       
     Website: https://frankenstein.finance/
-    twitter: https://twitter.com/FrankensteinFinance
+    twitter: https://twitter.com/FrankenDefi
 */
 
 // import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";

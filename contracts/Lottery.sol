@@ -11,7 +11,7 @@ pragma solidity ^0.6.12;
     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝╚═╝╚═╝  ╚═══╝
                                                                       
     Website: https://frankenstein.finance/
-    twitter: https://twitter.com/FrankensteinFinance
+    twitter: https://twitter.com/FrankenDefi
 */
 
 import "./LotteryNFT.sol";

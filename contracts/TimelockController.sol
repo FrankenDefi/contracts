@@ -12,7 +12,7 @@ pragma experimental ABIEncoderV2;
     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝╚═╝╚═╝  ╚═══╝
                                                                       
     Website: https://frankenstein.finance/
-    twitter: https://twitter.com/FrankensteinFinance
+    twitter: https://twitter.com/FrankenDefi
 */
 
 import "./interfaces/IERC20.sol";
