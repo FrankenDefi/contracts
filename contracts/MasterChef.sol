@@ -62,18 +62,28 @@ contract MasterChef is Ownable, ReentrancyGuard {
     address public NATIVE;
     // LotteryNFT address
     address public lottery;
-    // Owner reward per block: 10% ==> 11.11%
-    uint256 public ownerNATIVEReward = 1111;
-    // Lottery reward per block: 1% ==> 1.11%
-    uint256 public lotteryNATIVEReward = 111;    
+    // Referrals Interface
+    IReferrals public referrals;
+    // Owner reward per block: 10%
+    uint256 public ownerNATIVEReward = 1000;
+    // Lottery reward per block: 1%
+    uint256 public lotteryNATIVEReward = 100;
+    // Referrals reward per block: 0.25%
+    uint256 percReferrals = 25;
+    // Natives per block: (0.190496575342466 - owner 10% - lottery 1% - referrals 0.25%)
+    uint256 public NATIVEPerBlock = 171232876712329000; // NATIVE tokens created per block
+
+    /*For BSC*/
     // Native total supply: 2 mil = 2000000e18
     uint256 public NATIVEMaxSupply = 2000000e18;
-    // Natives per block: (0.190258751902588 - owner 10%)
-    uint256 public NATIVEPerBlock = 171232876712329000; // NATIVE tokens created per block
-    // Approx 8/3/2021
-    uint256 public startBlock = 5496000; // https://bscscan.com/block/countdown/5496000
-    IReferrals public referrals;
-    uint256 percReferrals = 0.1 ether;
+    // Approx 17/5/2021
+    uint256 public startBlock = 7478860; // https://bscscan.com/block/countdown/7478860
+
+    /*For FTM*/
+    // // Native total supply: 6 mil = 6000000e18
+    // uint256 public NATIVEMaxSupply = 6000000e18;
+    // // Approx 17/5/2021
+    // uint256 public startBlock = 6754000; // https://ftmscan.com/block/countdown/6754000
 
     PoolInfo[] public poolInfo; // Info of each pool.
     mapping(uint256 => mapping(address => UserInfo)) public userInfo; // Info of each user that stakes LP tokens.
@@ -259,7 +269,7 @@ contract MasterChef is Ownable, ReentrancyGuard {
                 );
             if (pending > 0) {
                 safeNATIVETransfer(msg.sender, pending);
-                uint256 _amountSponsor = pending.mul(percReferrals).div(100 ether);
+                uint256 _amountSponsor = pending.mul(percReferrals).div(10000);
                 NativeToken(NATIVE).mint(referrals.getSponsor(msg.sender), _amountSponsor);
                 referrals.updateEarn(referrals.getSponsor(msg.sender), _amountSponsor);
             }
@@ -300,7 +310,7 @@ contract MasterChef is Ownable, ReentrancyGuard {
             );
         if (pending > 0) {
             safeNATIVETransfer(msg.sender, pending);
-            uint256 _amountSponsor = pending.mul(percReferrals).div(100 ether);
+            uint256 _amountSponsor = pending.mul(percReferrals).div(10000);
             NativeToken(NATIVE).mint(referrals.getSponsor(msg.sender), _amountSponsor);
             referrals.updateEarn(referrals.getSponsor(msg.sender), _amountSponsor);
         }
