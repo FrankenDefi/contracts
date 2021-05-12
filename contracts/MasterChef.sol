@@ -72,18 +72,22 @@ contract MasterChef is Ownable, ReentrancyGuard {
     uint256 percReferrals = 25;
     // Natives per block: (0.190496575342466 - owner 10% - lottery 1% - referrals 0.25%)
     uint256 public NATIVEPerBlock = 171232876712329000; // NATIVE tokens created per block
+    // Native total supply: 2 mil = 2000000e18 for BSC, Native total supply: 6 mil = 6000000e18 for FTM
+    uint256 public NATIVEMaxSupply;
+    // Approx 17/5/2021
+    uint256 public startBlock;
 
     /*For BSC*/
     // Native total supply: 2 mil = 2000000e18
-    uint256 public NATIVEMaxSupply = 2000000e18;
+    uint256 public bsc_NATIVEMaxSupply = 2000000e18;
     // Approx 17/5/2021
-    uint256 public startBlock = 7478860; // https://bscscan.com/block/countdown/7478860
+    uint256 public bsc_startBlock = 7478860; // https://bscscan.com/block/countdown/7478860
 
     /*For FTM*/
-    // // Native total supply: 6 mil = 6000000e18
-    // uint256 public NATIVEMaxSupply = 6000000e18;
-    // // Approx 17/5/2021
-    // uint256 public startBlock = 6754000; // https://ftmscan.com/block/countdown/6754000
+    // Native total supply: 6 mil = 6000000e18
+    uint256 public ftm_NATIVEMaxSupply = 6000000e18;
+    // Approx 17/5/2021
+    uint256 public ftm_startBlock = 6754000; // https://ftmscan.com/block/countdown/6754000
 
     PoolInfo[] public poolInfo; // Info of each pool.
     mapping(uint256 => mapping(address => UserInfo)) public userInfo; // Info of each user that stakes LP tokens.
@@ -97,10 +101,17 @@ contract MasterChef is Ownable, ReentrancyGuard {
         uint256 amount
     );
 
-    constructor(address _lottery, address _token, IReferrals _referrals) public {
+    constructor(address _lottery, address _token, IReferrals _referrals, uint _type) public {
         NATIVE = _token;
         lottery = _lottery;
         referrals = _referrals;
+        if(_type == 0){
+            NATIVEMaxSupply = bsc_NATIVEMaxSupply;
+            startBlock = bsc_startBlock;
+        } else {
+            NATIVEMaxSupply = ftm_NATIVEMaxSupply;
+            startBlock = ftm_startBlock;
+        }
     }
 
     function poolLength() external view returns (uint256) {

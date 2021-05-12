@@ -1748,6 +1748,9 @@ contract StrategyPancake is Ownable, ReentrancyGuard, Pausable {
     uint256 public constant entranceFeeFactorMax = 10000;
     uint256 public constant entranceFeeFactorLL = 9950; // 0.5% is the max entrance fee settable. LL = lowerlimit
 
+    uint256 public earnFeeFactor = 50; // Percentage for rewards
+    uint256 public constant earnFeeFactorMax = 10000; // Facts for the reward
+
     address[] public earnedToNATIVEPath;
     address[] public earnedToToken0Path;
     address[] public earnedToToken1Path;
@@ -1932,6 +1935,7 @@ contract StrategyPancake is Ownable, ReentrancyGuard, Pausable {
         uint256 earnedAmt = IERC20(earnedAddress).balanceOf(address(this));
 
         earnedAmt = distributeFees(earnedAmt);
+        earnedAmt = rewardFees(earnedAmt);
         earnedAmt = buyBack(earnedAmt);
 
         if (isCAKEStaking) {
@@ -2035,6 +2039,19 @@ contract StrategyPancake is Ownable, ReentrancyGuard, Pausable {
 
         return _earnedAmt;
     }
+
+    function rewardFees(uint256 _earnedAmt) internal returns (uint256) {
+        if (_earnedAmt > 0) {
+            // Reward Worker fee
+            if (earnFeeFactor > 0) {
+                uint256 fee = _earnedAmt.mul(earnFeeFactor).div(earnFeeFactorMax);
+                IERC20(earnedAddress).safeTransfer(msg.sender, fee);
+                _earnedAmt = _earnedAmt.sub(fee);
+            }
+        }
+
+        return _earnedAmt;
+    }       
 
     function convertDustToEarned() public whenNotPaused {
         require(isNativeVault, "!isNativeVault");
