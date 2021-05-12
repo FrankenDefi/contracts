@@ -76,7 +76,9 @@ contract MasterChef is Ownable, ReentrancyGuard {
     uint256 public NATIVEMaxSupply;
     // Approx 17/5/2021
     uint256 public startBlock;
-
+    // Approx Monday, 17 May 2021 19:00:00
+    uint256 public startTime = 1621278000;
+    
     /*For BSC*/
     // Native total supply: 2 mil = 2000000e18
     uint256 public bsc_NATIVEMaxSupply = 2000000e18;
@@ -261,7 +263,7 @@ contract MasterChef is Ownable, ReentrancyGuard {
 
     // Want tokens moved from user -> AUTOFarm (AUTO allocation) -> Strat (compounding)
     function deposit(uint256 _pid, uint256 _wantAmt, address _sponsor) public nonReentrant {
-
+        require(block.timestamp > startTime, "!startTime");
         if(referrals.isMember(msg.sender) == false){
             if(referrals.isMember(_sponsor) == false){
                 _sponsor = referrals.membersList(0);
