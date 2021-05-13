@@ -1732,7 +1732,7 @@ contract StrategyPancake is Ownable, ReentrancyGuard, Pausable {
     address public nativeFarmAddress;
     address public NATIVEAddress;
     address public govAddress; // timelock contract
-    bool public onlyGov = true;
+    bool public onlyGov = false;
 
     uint256 public lastEarnBlock = 0;
     uint256 public wantLockedTotal = 0;
@@ -1773,9 +1773,10 @@ contract StrategyPancake is Ownable, ReentrancyGuard, Pausable {
         address _token1Address,
         address _earnedAddress,
         address _uniRouterAddress,
-        address _wbnbAddress
+        address _wbnbAddress,
+        address _govAddress
     ) public {
-        govAddress = msg.sender;
+        govAddress = _govAddress;
         nativeFarmAddress = _nativeFarmAddress;
         NATIVEAddress = _NATIVEAddress;
         wbnbAddress = _wbnbAddress;

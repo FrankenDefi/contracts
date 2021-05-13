@@ -1738,7 +1738,7 @@ contract StrategyNative is Ownable, ReentrancyGuard, Pausable {
     uint256 public wantLockedTotal = 0;
     uint256 public sharesTotal = 0;
 
-    uint256 public controllerFee = 20;
+    uint256 public controllerFee = 200;
     uint256 public constant controllerFeeMax = 10000; // 100 = 1%
     uint256 public constant controllerFeeUL = 300;
 
@@ -1771,9 +1771,10 @@ contract StrategyNative is Ownable, ReentrancyGuard, Pausable {
         address _token0Address,
         address _token1Address,
         address _earnedAddress,
-        address _uniRouterAddress
+        address _uniRouterAddress,
+        address _govAddress
     ) public {
-        govAddress = msg.sender;
+        govAddress = _govAddress;
         nativeFarmAddress = _nativeFarmAddress;
         NATIVEAddress = _NATIVEAddress;
 
