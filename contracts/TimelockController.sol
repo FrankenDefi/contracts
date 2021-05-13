@@ -65,6 +65,17 @@ interface IStrategy {
     function noTimeLockFunc3() external;
 }
 
+/**
+ * @dev Lottery functions that do not require timelock or have a timelock less than the min timelock
+ */
+interface ILottery {
+    function drawAndReset(uint256 _externalRandomNumber) external;
+    function drawAndEnter(uint256 _externalRandomNumber) external;
+    function reset() external;
+    function enterDrawingPhase() external;
+    function drawing(uint256 _externalRandomNumber) external;
+}
+
 // import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/TimelockController.sol";
 /**
  * @dev Contract module which acts as a timelocked controller. When set as the
@@ -94,7 +105,7 @@ contract TimelockController is AccessControl, ReentrancyGuard {
     uint256 public minDelay = 60; // seconds - to be increased in production
     uint256 public minDelayReduced = 30; // seconds - to be increased in production
 
-    address payable public devWalletAddress = 0xB5Bf49B175Fc5d77EfdE4De3A30Fd1577b041e94;
+    address payable public devWalletAddress;
     /**
      * @dev Emitted when a call is scheduled as part of operation `id`.
      */
@@ -157,10 +168,12 @@ contract TimelockController is AccessControl, ReentrancyGuard {
     /**
      * @dev Initializes the contract with a given `minDelay`.
      */
-    constructor()
+    constructor(address payable _devWalletAddress)
         public
     // address[] memory proposers, address[] memory executors
     {
+        devWalletAddress = _devWalletAddress;
+
         _setRoleAdmin(TIMELOCK_ADMIN_ROLE, TIMELOCK_ADMIN_ROLE);
         _setRoleAdmin(PROPOSER_ROLE, TIMELOCK_ADMIN_ROLE);
         _setRoleAdmin(EXECUTOR_ROLE, TIMELOCK_ADMIN_ROLE);
@@ -635,4 +648,25 @@ contract TimelockController is AccessControl, ReentrancyGuard {
     {
         IStrategy(_stratAddress).noTimeLockFunc3();
     }
+
+    function drawAndReset(address _lottery, uint256 _externalRandomNumber) public onlyRole(EXECUTOR_ROLE) {
+        ILottery(_lottery).drawAndReset(_externalRandomNumber);
+    }
+
+    function drawAndEnter(address _lottery, uint256 _externalRandomNumber) public onlyRole(EXECUTOR_ROLE) {
+        ILottery(_lottery).drawAndEnter(_externalRandomNumber);
+    }
+
+    function reset(address _lottery) public onlyRole(EXECUTOR_ROLE) {
+        ILottery(_lottery).reset();
+    }
+
+    function enterDrawingPhase(address _lottery) public onlyRole(EXECUTOR_ROLE) {
+        ILottery(_lottery).enterDrawingPhase();
+    }
+
+    function drawing(address _lottery, uint256 _externalRandomNumber) public onlyRole(EXECUTOR_ROLE) {
+        ILottery(_lottery).drawing(_externalRandomNumber);
+    }
+
 }
