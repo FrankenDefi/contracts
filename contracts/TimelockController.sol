@@ -19,6 +19,7 @@ import "./interfaces/IERC20.sol";
 import "./libraries/SafeERC20.sol";
 import "./helpers/AccessControl.sol";
 import "./helpers/ReentrancyGuard.sol";
+import "./interfaces/IHelp.sol";
 
 /**
  * @dev NativeFarm functions that do not require less than the min timelock

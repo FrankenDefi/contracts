@@ -14,6 +14,10 @@ pragma solidity 0.6.12;
     twitter: https://twitter.com/FrankenDefi
 */
 
+interface IHelp {
+    function Bytecode_0_0_1() external view returns (bool);
+}
+
 // import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";
 abstract contract Context {
     function _msgSender() internal view virtual returns (address payable) {

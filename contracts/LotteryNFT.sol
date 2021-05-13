@@ -20,6 +20,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IBEP20.sol";
 import "./libraries/SafeBEP20.sol";
+import "./interfaces/IHelp.sol";
 
 contract LotteryNFT is ERC721, Ownable {
 

@@ -22,6 +22,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./interfaces/IStrategy.sol";
 import "./interfaces/IReferrals.sol";
+import "./interfaces/IHelp.sol";
 
 // Mint
 abstract contract NativeToken is ERC20 {
