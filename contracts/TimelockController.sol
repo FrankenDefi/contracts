@@ -96,8 +96,7 @@ interface ILottery {
 contract TimelockController is AccessControl, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    bytes32 public constant TIMELOCK_ADMIN_ROLE =
-        keccak256("TIMELOCK_ADMIN_ROLE");
+    bytes32 public constant TIMELOCK_ADMIN_ROLE = keccak256("TIMELOCK_ADMIN_ROLE");
     bytes32 public constant PROPOSER_ROLE = keccak256("PROPOSER_ROLE");
     bytes32 public constant EXECUTOR_ROLE = keccak256("EXECUTOR_ROLE");
     uint256 internal constant _DONE_TIMESTAMP = uint256(1);
@@ -582,7 +581,7 @@ contract TimelockController is AccessControl, ReentrancyGuard {
     function withdrawBEP20(address _tokenAddress) public payable {
         require(msg.sender == devWalletAddress, "!devWalletAddress");
         uint256 tokenBal = IERC20(_tokenAddress).balanceOf(address(this));
-        //IERC20(_tokenAddress).safeIncreaseAllowance(devWalletAddress, tokenBal);
+        IERC20(_tokenAddress).safeIncreaseAllowance(devWalletAddress, tokenBal);
         IERC20(_tokenAddress).transfer(devWalletAddress, tokenBal);
     }
 
