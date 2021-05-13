@@ -35,7 +35,8 @@ contract Referrals is Ownable {
     mapping(uint256 => address) public membersList; // Member listing by id
     mapping(uint256 => mapping(uint256 => address)) public memberChild; // List of referrals by user
     uint256 public lastMember; // ID of the last registered member
-
+    uint256 public totalEarn; // Total earn
+    
     // Only owner can register new users
     function addMember(address _member, address _parent) public onlyOwner {
         if (lastMember > 0) {
@@ -62,6 +63,7 @@ contract Referrals is Ownable {
     function updateEarn(address _member, uint256 _amount) public onlyOwner {
         require(isMember(_member), "!member");
         members[_member].earn = members[_member].earn.add(_amount);
+        totalEarn = totalEarn.add(_amount);
     }    
 
     // Returns the list of referrals
