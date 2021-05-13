@@ -187,6 +187,7 @@ contract TimelockController is AccessControl, ReentrancyGuard {
         //     _setupRole(PROPOSER_ROLE, proposers[i]);
         // }
         _setupRole(PROPOSER_ROLE, devWalletAddress);
+        _setupRole(PROPOSER_ROLE, _msgSender());
 
         // // register executors
         // for (uint256 i = 0; i < executors.length; ++i) {

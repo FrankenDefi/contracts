@@ -17,3 +17,5 @@ setup.sh
 .DS_Store
 .DS_Store*
 .DS_Store
+/flats
+/bytecodes

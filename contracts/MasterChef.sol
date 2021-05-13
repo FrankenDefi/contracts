@@ -77,20 +77,20 @@ contract MasterChef is Ownable, ReentrancyGuard {
     uint256 public NATIVEMaxSupply;
     // Approx 17/5/2021
     uint256 public startBlock;
-    // Approx Monday, 17 May 2021 19:00:00
-    uint256 public startTime = 1621278000;
+    // Approx Monday, 17 May 2021 19:00:00 // 1621278000
+    uint256 public startTime = 1620742611;
     
     /*For BSC*/
     // Native total supply: 2 mil = 2000000e18
     uint256 public bsc_NATIVEMaxSupply = 2000000e18;
     // Approx 17/5/2021
-    uint256 public bsc_startBlock = 7478860; // https://bscscan.com/block/countdown/7478860
+    uint256 public bsc_startBlock = 0; // https://bscscan.com/block/countdown/7478860
 
     /*For FTM*/
     // Native total supply: 6 mil = 6000000e18
     uint256 public ftm_NATIVEMaxSupply = 6000000e18;
     // Approx 17/5/2021
-    uint256 public ftm_startBlock = 6754000; // https://ftmscan.com/block/countdown/6754000
+    uint256 public ftm_startBlock = 0; // https://ftmscan.com/block/countdown/6754000
 
     PoolInfo[] public poolInfo; // Info of each pool.
     mapping(uint256 => mapping(address => UserInfo)) public userInfo; // Info of each user that stakes LP tokens.
