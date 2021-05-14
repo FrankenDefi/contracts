@@ -2,5 +2,5 @@
 pragma solidity ^0.6.12;
 
 interface IHelp {
-    function Bytecode_0_0_1() external view returns (bool);
+    function Bytecode_0_0_2() external view returns (bool);
 }
