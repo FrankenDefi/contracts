@@ -71,26 +71,22 @@ contract MasterChef is Ownable, ReentrancyGuard {
     uint256 public lotteryNATIVEReward = 100;
     // Referrals reward per block: 0.25%
     uint256 percReferrals = 25;
-    // Natives per block: (0.190496575342466 - owner 10% - lottery 1% - referrals 0.25%)
-    uint256 public NATIVEPerBlock = 171232876712329000; // NATIVE tokens created per block
-    // Native total supply: 2 mil = 2000000e18 for BSC, Native total supply: 6 mil = 6000000e18 for FTM
-    uint256 public NATIVEMaxSupply;
-    // Approx 17/5/2021
-    uint256 public startBlock;
-    // Approx Monday, 17 May 2021 19:00:00 // 1621278000
-    uint256 public startTime = 1620742611;
+    // NATIVE tokens created per block
+    uint256 public NATIVEPerBlock;
+    // Native total supply: 2 mil = 2000000e18
+    uint256 public NATIVEMaxSupply = 2000000e18;
+    // Approx Monday, 17 May 2021 19:00:00
+    uint256 public startTime = 1621278000;
+    // Counter StartTime
+    uint256 public startTimeCount = 0;
     
     /*For BSC*/
-    // Native total supply: 2 mil = 2000000e18
-    uint256 public bsc_NATIVEMaxSupply = 2000000e18;
-    // Approx 17/5/2021
-    uint256 public bsc_startBlock = 0; // https://bscscan.com/block/countdown/7478860
+    // Natives per block: (0.190496575342466 - owner 10% - lottery 1% - referrals 0.25%)
+    uint256 public NATIVEPerBlockBSC = 171232876712329000;
 
     /*For FTM*/
-    // Native total supply: 6 mil = 6000000e18
-    uint256 public ftm_NATIVEMaxSupply = 6000000e18;
-    // Approx 17/5/2021
-    uint256 public ftm_startBlock = 0; // https://ftmscan.com/block/countdown/6754000
+    // Natives per block: (0.063498858447488 - owner 10% - lottery 1% - referrals 0.25%)
+    uint256 public NATIVEPerBlockFTM = 57077625570776330;
 
     PoolInfo[] public poolInfo; // Info of each pool.
     mapping(uint256 => mapping(address => UserInfo)) public userInfo; // Info of each user that stakes LP tokens.
@@ -109,11 +105,9 @@ contract MasterChef is Ownable, ReentrancyGuard {
         lottery = _lottery;
         referrals = _referrals;
         if(_type == 0){
-            NATIVEMaxSupply = bsc_NATIVEMaxSupply;
-            startBlock = bsc_startBlock;
+            NATIVEPerBlock = NATIVEPerBlockBSC;
         } else {
-            NATIVEMaxSupply = ftm_NATIVEMaxSupply;
-            startBlock = ftm_startBlock;
+            NATIVEPerBlock = NATIVEPerBlockFTM;
         }
     }
 
@@ -132,7 +126,7 @@ contract MasterChef is Ownable, ReentrancyGuard {
         if (_withUpdate) {
             massUpdatePools();
         }
-        uint256 lastRewardBlock = block.number > startBlock ? block.number : startBlock;
+        uint256 lastRewardBlock = block.number;
         totalAllocPoint = totalAllocPoint.add(_allocPoint);
         poolInfo.push(
             PoolInfo({
@@ -412,5 +406,14 @@ contract MasterChef is Ownable, ReentrancyGuard {
         require(_token != NATIVE, "!safe");
         IERC20(_token).safeTransfer(msg.sender, _amount);
     }
+
+    function inCaseOfRequiringChangeOfInitialDate(uint256 _newDate)
+        public
+        onlyOwner
+    {
+        require(startTimeCount == 0, "!inCaseOfRequiringChangeOfInitialDate");
+        startTime = _newDate;
+        startTimeCount = 1;
+    }    
 
 }
