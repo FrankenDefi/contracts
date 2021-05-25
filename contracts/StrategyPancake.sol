@@ -1831,6 +1831,7 @@ contract StrategyPancake is Ownable, ReentrancyGuard, Pausable {
         public
         onlyOwner
         whenNotPaused
+        nonReentrant
         returns (uint256)
     {
         IERC20(wantAddress).safeTransferFrom(
@@ -1867,10 +1868,12 @@ contract StrategyPancake is Ownable, ReentrancyGuard, Pausable {
     }
 
     function farm() public nonReentrant {
+        require(isNativeVault, "!isNativeVault");
         _farm();
     }
 
     function _farm() internal {
+        require(isNativeVault, "!isNativeVault");
         uint256 wantAmt = IERC20(wantAddress).balanceOf(address(this));
         wantLockedTotal = wantLockedTotal.add(wantAmt);
         IERC20(wantAddress).safeIncreaseAllowance(farmContractAddress, wantAmt);
@@ -1923,7 +1926,7 @@ contract StrategyPancake is Ownable, ReentrancyGuard, Pausable {
     // 2. Converts farm tokens into want tokens
     // 3. Deposits want tokens
 
-    function earn() public whenNotPaused {
+    function earn() public whenNotPaused nonReentrant {
         require(isNativeVault, "!isNativeVault");
         if (onlyGov) {
             require(msg.sender == govAddress, "Not authorised");
@@ -2058,7 +2061,7 @@ contract StrategyPancake is Ownable, ReentrancyGuard, Pausable {
         return _earnedAmt;
     }       
 
-    function convertDustToEarned() public whenNotPaused {
+    function convertDustToEarned() public whenNotPaused nonReentrant {
         require(isNativeVault, "!isNativeVault");
         require(!isCAKEStaking, "isCAKEStaking");
 

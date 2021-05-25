@@ -1,3 +1,4 @@
+
 // SPDX-License-Identifier: MIT
 pragma solidity 0.6.12;
 
@@ -1732,7 +1733,6 @@ contract StrategyNative is Ownable, ReentrancyGuard, Pausable {
     address public nativeFarmAddress;
     address public NATIVEAddress;
     address public govAddress; // timelock contract
-    bool public onlyGov = true;
 
     uint256 public lastEarnBlock = 0;
     uint256 public wantLockedTotal = 0;
@@ -1763,8 +1763,6 @@ contract StrategyNative is Ownable, ReentrancyGuard, Pausable {
     constructor(
         address _nativeFarmAddress,
         address _NATIVEAddress,
-        bool _isCAKEStaking,
-        bool _isNativeVault,
         address _farmContractAddress,
         uint256 _pid,
         address _wantAddress,
@@ -1778,8 +1776,6 @@ contract StrategyNative is Ownable, ReentrancyGuard, Pausable {
         nativeFarmAddress = _nativeFarmAddress;
         NATIVEAddress = _NATIVEAddress;
 
-        isCAKEStaking = _isCAKEStaking;
-        isNativeVault = _isNativeVault;
         wantAddress = _wantAddress;
         farmContractAddress = _farmContractAddress;
         pid = _pid;
@@ -1796,6 +1792,7 @@ contract StrategyNative is Ownable, ReentrancyGuard, Pausable {
         public
         onlyOwner
         whenNotPaused
+        nonReentrant
         returns (uint256)
     {
         IERC20(wantAddress).safeTransferFrom(
@@ -1908,11 +1905,6 @@ contract StrategyNative is Ownable, ReentrancyGuard, Pausable {
     function setGov(address _govAddress) public {
         require(msg.sender == govAddress, "!gov");
         govAddress = _govAddress;
-    }
-
-    function setOnlyGov(bool _onlyGov) public {
-        require(msg.sender == govAddress, "!gov");
-        onlyGov = _onlyGov;
     }
 
     function inCaseTokensGetStuck(
