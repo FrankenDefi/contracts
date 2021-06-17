@@ -11,7 +11,14 @@
     "truffle": "^5.1.58",
     "truffle-contract": "^4.0.31",
     "truffle-flattener": "^1.4.4",
-    "truffle-plugin-verify": "^0.5.4"
+    "truffle-plugin-verify": "^0.5.4",
+    "chai": "4.2.0",
+    "chai-as-promised": "7.1.1",
+    "chai-bignumber": "3.0.0",
+    "lodash": "^4.17.21",
+    "lodash.flatmap": "^4.5.0",
+    "bignumber.js": "^9.0.1",
+    "mocha": "^8.2.1"
   },
   "devDependencies": {
     "@openzeppelin/contracts": "^3.1.0",

@@ -3,6 +3,7 @@
 /secrets.json
 /scripts/
 /migrations/
+/_migrations/
 /build/
 /test/
 /accounts.json
